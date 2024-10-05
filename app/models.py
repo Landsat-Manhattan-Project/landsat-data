@@ -1,22 +1,142 @@
 # app/models.py
 from typing import Optional
 from pydantic import BaseModel, Field
+from enum import Enum
+
+class UserRole(str, Enum):
+    """
+    Enumeration of possible user roles.
+    """
+    scientist = "scientist"
+    citizen = "citizen"
+    farmer = "farmer"
+    college_student = "college student"
+    engineer = "engineer"
+    biologist = "biologist"
+    geologist = "geologist"
 
 class EvaluateDataRequest(BaseModel):
-    latitude: float = Field(..., example=34.0522)
-    longitude: float = Field(..., example=-118.2437)
-    context: str = Field(..., example="I want to compare reflectance data with my ground measurements.")
+    """
+    Schema for the request payload to evaluate satellite data.
+    """
+    latitude: float = Field(
+        ..., 
+        example=34.0522, 
+        description="Latitude of the target location."
+    )
+    longitude: float = Field(
+        ..., 
+        example=-118.2437, 
+        description="Longitude of the target location."
+    )
+    context: str = Field(
+        ..., 
+        example="I want to compare reflectance data with my ground measurements.", 
+        description="User-provided context or purpose of the request."
+    )
+    role: UserRole = Field(
+        ..., 
+        example="citizen", 
+        description="Role of the user, e.g., 'citizen', 'scientist', 'farmer', etc."
+    )
 
 class EvaluateDataResponse(BaseModel):
+    """
+    Schema for the response payload after evaluating satellite data.
+    """
     user_friendly_response: str
 
 class MetadataResponse(BaseModel):
-    satellite: str
-    acquisition_date: str
-    acquisition_time: str
-    latitude: float
-    longitude: float
-    wrs_path: int
-    wrs_row: int
-    cloud_coverage: float
-    image_quality: str
+    """
+    Schema for the metadata associated with a Landsat satellite image.
+    """
+    satellite: str = Field(
+        ..., 
+        example="Landsat 8", 
+        description="Name of the satellite."
+    )
+    acquisition_date: str = Field(
+        ..., 
+        example="2024-04-27", 
+        description="Date of image acquisition."
+    )
+    acquisition_time: str = Field(
+        ..., 
+        example="10:15:30", 
+        description="Time of image acquisition."
+    )
+    latitude: float = Field(
+        ..., 
+        example=34.0522, 
+        description="Latitude of the image center."
+    )
+    longitude: float = Field(
+        ..., 
+        example=-118.2437, 
+        description="Longitude of the image center."
+    )
+    wrs_path: int = Field(
+        ..., 
+        example=34, 
+        description="Path number in WRS-2 (Worldwide Reference System)."
+    )
+    wrs_row: int = Field(
+        ..., 
+        example=45, 
+        description="Row number in WRS-2."
+    )
+    cloud_coverage: float = Field(
+        ..., 
+        example=12.5, 
+        description="Percentage of cloud coverage in the image."
+    )
+    image_quality: str = Field(
+        ..., 
+        example="Good", 
+        description="Quality assessment of the image."
+    )
+    sun_elevation: float = Field(
+        ..., 
+        example=45.0, 
+        description="Sun elevation angle in degrees."
+    )
+    sun_azimuth: float = Field(
+        ..., 
+        example=180.0, 
+        description="Sun azimuth angle in degrees."
+    )
+    ground_sampling_distance: float = Field(
+        ..., 
+        example=30.0, 
+        description="Ground sampling distance in meters per pixel."
+    )
+    projection: str = Field(
+        ..., 
+        example="UTM Zone 11N", 
+        description="Map projection used for the image."
+    )
+    processing_level: str = Field(
+        ..., 
+        example="Level-1", 
+        description="Processing level of the data (e.g., Level-1, Level-2)."
+    )
+    scene_id: str = Field(
+        ..., 
+        example="LC08_L1TP_034045_20200427_20200506_01_T1", 
+        description="Unique identifier for the scene."
+    )
+    orbit_number: int = Field(
+        ..., 
+        example=12345, 
+        description="Orbit number during image acquisition."
+    )
+    sensor_type: str = Field(
+        ..., 
+        example="OLI/TIRS", 
+        description="Type of sensor used for data capture."
+    )
+    cloud_mask: Optional[str] = Field(
+        None, 
+        example="Clear", 
+        description="Information about cloud presence in the image."
+    )
