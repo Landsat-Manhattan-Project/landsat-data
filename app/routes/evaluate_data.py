@@ -1,8 +1,9 @@
 # app/routes/evaluate_data.py
+
 from fastapi import APIRouter, HTTPException
 from app.models import EvaluateDataRequest, EvaluateDataResponse
+from app.routes.metadata import get_metadata  # Import the get_metadata function
 from app.utils.openai_client import get_openai_response
-from app.routes.metadata import get_metadata  # Import the metadata function
 
 router = APIRouter()
 
@@ -37,21 +38,21 @@ def evaluate_data(request: EvaluateDataRequest):
             f"Projection: {metadata.projection}\n"
             f"Processing Level: {metadata.processing_level}\n"
             f"Scene ID: {metadata.scene_id}\n"
-            f"Orbit Number: {metadata.orbit_number}\n"
+            f"WRS Path: {metadata.wrs_path}\n"
+            f"WRS Row: {metadata.wrs_row}\n"
             f"Sensor Type: {metadata.sensor_type}\n"
-            f"Cloud Mask: {metadata.cloud_mask}\n"
         )
         
         # Create a comprehensive prompt combining metadata, user context, and role
         prompt = (
             f"Satellite Data:\n{metadata_info}\n\n"
             f"User Context: {request.context}\n"
-            f"User Role: {request.role.capitalize()}\n\n"
-            f"Please provide an explanation of the satellite data that is suitable for a {request.role}."
+            f"User Role: {request.role.value.capitalize()}\n\n"
+            f"Please provide an explanation of the satellite data that is suitable for a {request.role.value}."
         )
         
         # Obtain the AI-generated response from OpenAI
-        ai_response = get_openai_response(prompt, role=request.role)
+        ai_response = get_openai_response(prompt, role=request.role.value)
         
         # Return the response encapsulated in the EvaluateDataResponse model
         return EvaluateDataResponse(user_friendly_response=ai_response)

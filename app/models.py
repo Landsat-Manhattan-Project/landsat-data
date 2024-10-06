@@ -1,4 +1,5 @@
 # app/models.py
+
 from typing import Optional
 from pydantic import BaseModel, Field
 from enum import Enum
@@ -75,63 +76,63 @@ class MetadataResponse(BaseModel):
         example=-118.2437, 
         description="Longitude of the image center."
     )
-    wrs_path: int = Field(
-        ..., 
+    wrs_path: Optional[int] = Field(
+        None, 
         example=34, 
         description="Path number in WRS-2 (Worldwide Reference System)."
     )
-    wrs_row: int = Field(
-        ..., 
+    wrs_row: Optional[int] = Field(
+        None, 
         example=45, 
         description="Row number in WRS-2."
     )
-    cloud_coverage: float = Field(
-        ..., 
+    cloud_coverage: Optional[float] = Field(
+        None, 
         example=12.5, 
         description="Percentage of cloud coverage in the image."
     )
-    image_quality: str = Field(
-        ..., 
+    image_quality: Optional[str] = Field(
+        None, 
         example="Good", 
         description="Quality assessment of the image."
     )
-    sun_elevation: float = Field(
-        ..., 
+    sun_elevation: Optional[float] = Field(
+        None, 
         example=45.0, 
         description="Sun elevation angle in degrees."
     )
-    sun_azimuth: float = Field(
-        ..., 
+    sun_azimuth: Optional[float] = Field(
+        None, 
         example=180.0, 
         description="Sun azimuth angle in degrees."
     )
-    ground_sampling_distance: float = Field(
-        ..., 
+    ground_sampling_distance: Optional[float] = Field(
+        None, 
         example=30.0, 
         description="Ground sampling distance in meters per pixel."
     )
-    projection: str = Field(
-        ..., 
+    projection: Optional[str] = Field(
+        None, 
         example="UTM Zone 11N", 
         description="Map projection used for the image."
     )
-    processing_level: str = Field(
-        ..., 
+    processing_level: Optional[str] = Field(
+        None, 
         example="Level-1", 
         description="Processing level of the data (e.g., Level-1, Level-2)."
     )
-    scene_id: str = Field(
-        ..., 
+    scene_id: Optional[str] = Field(
+        None, 
         example="LC08_L1TP_034045_20200427_20200506_01_T1", 
         description="Unique identifier for the scene."
     )
-    orbit_number: int = Field(
-        ..., 
+    orbit_number: Optional[int] = Field(
+        None, 
         example=12345, 
         description="Orbit number during image acquisition."
     )
-    sensor_type: str = Field(
-        ..., 
+    sensor_type: Optional[str] = Field(
+        None, 
         example="OLI/TIRS", 
         description="Type of sensor used for data capture."
     )
