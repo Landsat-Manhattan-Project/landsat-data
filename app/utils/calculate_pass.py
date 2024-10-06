@@ -147,7 +147,7 @@ def point_is_there(feature, point, mode):
 
 def get_future_date(lat, lon):
 
-  shapefile = ogr.Open("/content/WRS2_descending.shp")
+  shapefile = ogr.Open("./content/WRS2_descending.shp")
   layer = shapefile.GetLayer(0)
   point = shapely.geometry.Point(lon, lat)
   mode = 'D'
