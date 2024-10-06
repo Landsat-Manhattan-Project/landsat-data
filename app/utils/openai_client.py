@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 import logging
 from fastapi import HTTPException
+from typing import List, Dict
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -24,13 +25,12 @@ else:
     logger.error("OpenAI API key is not set. Please set the OPENAI_API_KEY environment variable.")
     raise ValueError("OpenAI API key is not set.")
 
-def get_openai_response(prompt: str, role: str, max_tokens: int = 650) -> str:
+def get_openai_response(messages: List[Dict[str, str]], max_tokens: int = 650) -> str:
     """
-    Sends a prompt to OpenAI's API and retrieves the generated response.
+    Sends a list of messages to OpenAI's API and retrieves the generated response.
 
     Args:
-        prompt (str): The prompt to send to OpenAI.
-        role (str): The role of the user to tailor the response.
+        messages (List[Dict[str, str]]): The conversation messages to send to OpenAI.
         max_tokens (int): The maximum number of tokens in the response.
 
     Returns:
@@ -44,29 +44,11 @@ def get_openai_response(prompt: str, role: str, max_tokens: int = 650) -> str:
         "Content-Type": "application/json"
     }
     
-    # Define system messages based on user roles to guide the AI's responses
-    role_system_messages = {
-        "scientist": "You are a knowledgeable and precise assistant specialized in satellite data and Earth sciences.",
-        "citizen": "You are a friendly and clear assistant who explains technical information in an easy-to-understand manner.",
-        "farmer": "You are an assistant with expertise in agriculture and satellite data applications in farming.",
-        "college student": "You are a helpful assistant who explains complex concepts in a manner suitable for college students.",
-        "engineer": "You are a detailed and technical assistant with expertise in engineering applications of satellite data.",
-        "biologist": "You are an expert assistant specialized in biological applications and environmental monitoring using satellite data.",
-        "geologist": "You are a knowledgeable assistant focused on geological applications and earth surface monitoring using satellite data."
-    }
-    
-    # Fallback system message if role is not recognized
-    system_message = role_system_messages.get(role.lower(), "You are a helpful assistant.")
-
-    # Construct the payload for OpenAI API
     data = {
         "model": "gpt-4o-mini",  
-        "messages": [
-            {"role": "system", "content": system_message},
-            {"role": "user", "content": prompt}
-        ],
+        "messages": messages,
         "max_tokens": max_tokens,
-        "temperature": 0.7  # Controls the randomness of the output
+        "temperature": 0.8,  # Controls the randomness of the output
     }
     
     try:
