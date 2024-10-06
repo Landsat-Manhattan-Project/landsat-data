@@ -146,3 +146,34 @@ class MetadataResponse(BaseModel):
         example=10.5, 
         description="Distance in kilometers to the closest available data location."
     )
+
+
+class LandsatPassResponse(BaseModel):
+    """
+    Schema for the landsat pass response.
+    """
+    date_landsat_8: str = Field(
+        ..., 
+        example="2024-04-27", 
+        description="Date of the Landsat 8 pass."
+    )
+    date_landsat_9: str = Field(
+        ..., 
+        example="2024-04-27", 
+        description="Date of the Landsat 9 pass."
+    )
+
+class CalculateRequest(BaseModel):
+    """
+    Schema for the request payload to calculate the Landsat pass.
+    """
+    latitude: float = Field(
+        ..., 
+        example=34.0522, 
+        description="Latitude of the target location."
+    )
+    longitude: float = Field(
+        ..., 
+        example=-118.2437, 
+        description="Longitude of the target location."
+    )
