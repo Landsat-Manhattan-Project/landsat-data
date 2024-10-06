@@ -41,6 +41,7 @@ def evaluate_data(request: EvaluateDataRequest):
             f"WRS Path: {metadata.wrs_path}\n"
             f"WRS Row: {metadata.wrs_row}\n"
             f"Sensor Type: {metadata.sensor_type}\n"
+            f"Distance to Location: {metadata.distance_km:.2f} km\n"
         )
         
         # Create a comprehensive prompt combining metadata, user context, and role
@@ -56,6 +57,13 @@ def evaluate_data(request: EvaluateDataRequest):
         
         # Return the response encapsulated in the EvaluateDataResponse model
         return EvaluateDataResponse(user_friendly_response=ai_response)
+    except HTTPException as http_exc:
+        if http_exc.status_code == 404:
+            return EvaluateDataResponse(
+                user_friendly_response="No satellite data is available near your location to perform the evaluation."
+            )
+        else:
+            raise http_exc
     except Exception as e:
         # Raise a 500 Internal Server Error with the exception message
         raise HTTPException(status_code=500, detail=str(e))

@@ -141,3 +141,8 @@ class MetadataResponse(BaseModel):
         example="Clear", 
         description="Information about cloud presence in the image."
     )
+    distance_km: Optional[float] = Field(
+        None, 
+        example=10.5, 
+        description="Distance in kilometers to the closest available data location."
+    )
