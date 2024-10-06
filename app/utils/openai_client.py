@@ -24,7 +24,7 @@ else:
     logger.error("OpenAI API key is not set. Please set the OPENAI_API_KEY environment variable.")
     raise ValueError("OpenAI API key is not set.")
 
-def get_openai_response(prompt: str, role: str, max_tokens: int = 300) -> str:
+def get_openai_response(prompt: str, role: str, max_tokens: int = 650) -> str:
     """
     Sends a prompt to OpenAI's API and retrieves the generated response.
 
